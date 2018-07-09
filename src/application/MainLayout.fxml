@@ -18,9 +18,9 @@
       <Label fx:id="lab" prefHeight="17.0" prefWidth="69.0" text="Label" BorderPane.alignment="CENTER" />
    </left>
    <bottom>
-      <Button mnemonicParsing="false" onAction="#teste" text="Button" BorderPane.alignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#teste" text="Iniciar" BorderPane.alignment="CENTER" />
    </bottom>
    <top>
-      <Slider BorderPane.alignment="CENTER" />
+      <Slider fx:id="progresso" BorderPane.alignment="CENTER" />
    </top>
 </BorderPane>

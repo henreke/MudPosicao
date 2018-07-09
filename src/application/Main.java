@@ -1,10 +1,15 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import javafx.application.Application;
 
@@ -13,9 +18,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 public class Main extends Application {
@@ -32,6 +40,9 @@ public class Main extends Application {
 
 	@FXML
 	private Label lab;
+
+	@FXML
+	private Slider progresso;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -84,6 +95,22 @@ public class Main extends Application {
 		timerUpdate = new Timer();
 		timerUpdate.scheduleAtFixedRate(new RelogioUpdate(), 2000, 1000);
 
+		System.out.println("Working Directory = " +
+	              System.getProperty("user.dir"));
+		File clap = new File("./bin/som.wav");
+		playSound(clap);
+	}
+	static void playSound(File sound){
+		try{
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(sound));
+			clip.start();
+			Thread.sleep(clip.getMicrosecondLength()/1000);
+
+		}catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("erro");
+		}
 	}
 	public static void main(String[] args) {
 		launch(args);
@@ -109,19 +136,24 @@ public class Main extends Application {
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
+			long intervalo = 60000;
 			try {
 
-				if (System.currentTimeMillis() - posicao_corrente.hora_executada > 60000){
+				if (System.currentTimeMillis() - posicao_corrente.hora_executada > intervalo){
 					posicao_corrente = posicao.get(id_corrente);
 					posicao_corrente.hora_executada = System.currentTimeMillis();
 					id_corrente = (id_corrente+1) % posicao.size();
 					imgView4.setImage(posicao_corrente.imagem);
+					File clap = new File("./bin/som.wav");
+					playSound(clap);
+
 				}
 				else
 				{
-					long passado = posicao_corrente.hora_executada - System.currentTimeMillis();
-					System.out.print("Se passaram ");
+					double passado = 100.00* (System.currentTimeMillis() - posicao_corrente.hora_executada)/(intervalo*1.0);
 					System.out.println(passado);
+					progresso.setValue(passado);
+
 				}
 			}
 			catch (Exception e) {
