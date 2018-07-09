@@ -105,7 +105,7 @@ public class Main extends Application {
 			Clip clip = AudioSystem.getClip();
 			clip.open(AudioSystem.getAudioInputStream(sound));
 			clip.start();
-			Thread.sleep(clip.getMicrosecondLength()/1000);
+			//Thread.sleep(clip.getMicrosecondLength()/1000);
 
 		}catch (Exception e) {
 			// TODO: handle exception
